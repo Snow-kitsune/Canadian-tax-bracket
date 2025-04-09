@@ -44,15 +44,37 @@ else:
 # Average tax rate
 average_tax_rate = (tax_owed / yearly_inc) * 100
 
-# Bi-weekly pay
-bi_weekly_pay_untouched = yearly_inc / 26
-tax_owed_bi_weekly = tax_owed / 26
-true_bi_weekly_payment = bi_weekly_pay_untouched - tax_owed_bi_weekly
+# EI Simulation using while loop (1.64% of gross income, capped at $1077.48)
 
-# EI Calculation (1.64% of gross yearly income, capped at $1077.48)
-ei_total = min(yearly_inc * 0.0164, 1077.48)
-ei_bi_weekly = ei_total / 26
+ei_cap = 1077.48
+ei_percentage = 0.0164
+ei_paid = 0
+weeks_counter = 0
+gross_bi_weekly = yearly_inc / 26
+ei_contributions = []  # Optional: to track each period’s contribution (for extra detail)
+
+while ei_paid < ei_cap:
+    contribution = gross_bi_weekly * ei_percentage
+
+    # Prevent going over the cap
+    if ei_paid + contribution > ei_cap:
+        contribution = ei_cap - ei_paid
+
+    ei_paid += contribution
+    ei_contributions.append(contribution)  # For tracking each payment
+    weeks_counter += 1
+
+# Final bi-weekly EI deduction (last contribution might be smaller than regular)
+ei_bi_weekly = gross_bi_weekly * ei_percentage
 true_bi_weekly_payment_after_ei = true_bi_weekly_payment - ei_bi_weekly
+
+# Output
+print("----------------------------------------------------------")
+print("Your total EI contribution is: ${:.2f}".format(ei_paid))
+print("It takes {} bi-weekly payments to reach the EI max of ${:.2f}".format(weeks_counter, ei_cap))
+print("Your regular bi-weekly EI deduction is: ${:.2f}".format(ei_bi_weekly))
+print("Your final bi-weekly pay after tax and EI: ${:.2f}".format(true_bi_weekly_payment_after_ei))
+
 
 # Output results
 print("----------------------------------------------------------")
@@ -60,10 +82,4 @@ print("Your total tax owed is: ${:.2f}".format(tax_owed))
 print("----------------------------------------------------------")
 print("Your average tax rate is: {:.2f}%".format(average_tax_rate))
 print("----------------------------------------------------------")
-print("Your bi-weekly payment before deductions: ${:.2f}".format(bi_weekly_pay_untouched))
-print("Your bi-weekly tax deduction: ${:.2f}".format(tax_owed_bi_weekly))
-print("Your bi-weekly EI deduction: ${:.2f}".format(ei_bi_weekly))
-print("----------------------------------------------------------")
-print("Your final bi-weekly payment after tax and EI: ${:.2f}".format(true_bi_weekly_payment_after_ei))
-print("----------------------------------------------------------")
-print("Your total EI contribution for the year: ${:.2f}".format(ei_total))
+
