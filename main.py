@@ -62,6 +62,7 @@ cpp_bi_weekly = cpp_total / 26
 cpp_monthly = cpp_bi_weekly * 2
 true_bi_weekly_payment_after_ei_and_cpp = true_bi_weekly_payment_after_ei - cpp_bi_weekly
 monthly_payment_after_deductions = true_bi_weekly_payment_after_ei_and_cpp * 2
+monthly_payment_tax = tax_owed_monthly + ei_monthly + cpp_monthly
 
 # Output results
 print("----------------------------------------------------------")
@@ -83,4 +84,5 @@ print("----------------------------------------------------------")
 print("Your bi-weekly pay after all deductions: ${:.2f}".format(true_bi_weekly_payment_after_ei_and_cpp))
 print("----------------------------------------------------------")
 print("Your monthly payment after all deductions: ${:.2f}".format(monthly_payment_after_deductions))
+print("Your monthly payment toward taxes: ${:.2f}".format(monthly_payment_tax))
 print("\n")
