@@ -50,14 +50,16 @@ tax_owed_bi_weekly = tax_owed / 26
 true_bi_weekly_payment = bi_weekly_pay_untouched - tax_owed_bi_weekly
 
 # EI Calculation (1.64% of gross yearly income, capped at $1077.48)
-ei_total = min(yearly_inc * 0.0164, 1077.48)
+ei_total = min(yearly_inc * 0.0164, 1002.45)
 ei_bi_weekly = ei_total / 26
 true_bi_weekly_payment_after_ei = true_bi_weekly_payment - ei_bi_weekly
 
 # CPP Calculation (5.95% of gross yearly income, capped at $4034.10
-cpp_total = min(yearly_inc * 0.0595, 4034.10)
+cpp_total = min(yearly_inc * 0.0595, 3754.45)
 cpp_bi_weekly = cpp_total / 26
 true_bi_weekly_payment_after_ei_and_cpp = true_bi_weekly_payment_after_ei - cpp_bi_weekly
+monthly_payment_after_deductions = true_bi_weekly_payment_after_ei_and_cpp * 2
+monthly_tax_payment = (cpp_bi_weekly * 2) + (ei_bi_weekly * 2)
 
 # Output results
 print("----------------------------------------------------------")
@@ -74,4 +76,7 @@ print("Your total EI contribution for the year: ${:.2f}".format(ei_total))
 print("Your total CPP contribution for the year: ${:.2f}".format(cpp_total))
 print("----------------------------------------------------------")
 print("Your bi-weekly pay after all deductions: ${:.2f}".format(true_bi_weekly_payment_after_ei_and_cpp))
+print("----------------------------------------------------------")
+print("Your monthly payment after all deductions: ${:.2f}".format(monthly_payment_after_deductions))
+print("Your monthly tax payment comes to: ${:.2f}".format(monthly_tax_payment))
 print("\n")
